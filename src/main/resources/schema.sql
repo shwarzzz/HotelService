@@ -1,5 +1,4 @@
 BEGIN;
-DROP TABLE IF EXISTS hotel CASCADE;
 CREATE TABLE IF NOT EXISTS hotel
 (
     id      serial,
@@ -10,14 +9,12 @@ CREATE TABLE IF NOT EXISTS hotel
     CONSTRAINT ch_hotel_rating CHECK (rating > 0 AND rating <= 100)
 );
 
-DROP TABLE IF EXISTS room_type CASCADE;
 CREATE TABLE IF NOT EXISTS room_type
 (
     name varchar(50),
     PRIMARY KEY (name)
 );
 
-DROP TABLE IF EXISTS room CASCADE;
 CREATE TABLE IF NOT EXISTS room
 (
     id                   serial,
@@ -34,8 +31,6 @@ CREATE TABLE IF NOT EXISTS room
     CONSTRAINT fk_room_type_id FOREIGN KEY (type) REFERENCES room_type (name)
 );
 
-
-DROP TABLE IF EXISTS person CASCADE;
 CREATE TABLE IF NOT EXISTS person
 (
     id      serial,
@@ -46,7 +41,6 @@ CREATE TABLE IF NOT EXISTS person
     CONSTRAINT fk_guest_room_id FOREIGN KEY (room_id) REFERENCES room (id)
 );
 
-DROP TABLE IF EXISTS visits CASCADE;
 CREATE TABLE IF NOT EXISTS hotels_visits
 (
     person_id  serial,
