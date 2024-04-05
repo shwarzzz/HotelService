@@ -87,8 +87,7 @@ public class HotelService {
                     room.setIsAvailable(false);
                 }
                 person.setRoom(room);
-                person.getVisits().add(
-                        createVisit(personId, room.getHotel().getId()));
+                session.persist(createVisit(personId, room.getHotel().getId()));
                 session.getTransaction().commit();
             } catch (Exception e) {
                 System.out.println("Не удалось выполнить заселение");

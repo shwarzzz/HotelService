@@ -6,11 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.stream.Collectors;
 
 @Configuration
 @ComponentScan(basePackages = {"edu.tomokoki"})
@@ -21,14 +19,14 @@ public class SpringConfiguration {
         SessionFactory factory = new org.hibernate.cfg.Configuration()
                 .configure("my.hiber.cfg.xml")
                 .buildSessionFactory();
-        try (Session session = factory.getCurrentSession()) {
-            Path path = Paths.get(getClass().getResource("/schema.sql").toURI());
-            String createScript = Files.lines(path, StandardCharsets.UTF_8)
-                    .collect(Collectors.joining(" "));
+        try (Session session = factory.getCurrentSession();
+             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("schema.sql")) {
+            byte[] bytes = inputStream.readAllBytes();
+            String createScript = new String(bytes, StandardCharsets.UTF_8);
             session.beginTransaction();
             session.createNativeQuery(createScript).executeUpdate();
             session.getTransaction().commit();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Не удалось создать базу");
             System.exit(-1);
         }

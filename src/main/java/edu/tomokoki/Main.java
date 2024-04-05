@@ -10,4 +10,9 @@ public class Main {
                 "edu.tomokoki.configurations");
         context.getBean(ConsoleApplication.class).start();
     }
+
+    public static void addTestData() {
+        System.out.println("Хотите ли вы добавить тестовые данные в базу(y/n):");
+
+    }
 }
